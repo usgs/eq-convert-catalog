@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+#stdlib imports
+import argparse
+import os.path
+
+#local imports
+from eqconvert.convert import create_quakeml
+
+MODULES = ['isc-gem']
+
+def main(args):
+    
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('module', help='The catalog format to parse.  Supported file formats are: %s' % str(MODULES))
+    parser.add_argument('datafiles', nargs='+',help='Specify the file or files that are to be parsed')
+    parser.add_argument('-f','--folder', help='Specify the folder where output files should be written.',default=os.getcwd())
+    
+    pargs = parser.parse_args()
+    main(pargs)

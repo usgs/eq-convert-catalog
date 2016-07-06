@@ -1,0 +1,60 @@
+# ISC-GEM Global Instrumental Earthquake Catalogue
+# Version 2.01 - released on 2015-07-10
+#
+# Copyright (C) 2015 GEM Foundation and International Seismological Centre
+#
+# Contributions by: see http://www.globalquakemodel.org/contributors
+#
+# You may use this work under the terms of the CC-BY-SA 3.0 (unported)
+# [http://creativecommons.org/licenses/by-sa/3.0/]
+#
+# THE WORK IS PROTECTED BY COPYRIGHT AND/OR OTHER APPLICABLE LAW. INSOFAR
+# AS THIS WORK IS PROTECTED BY LAWS THAT NEIGHBOUR OR ARE SIMILARLY RELATED
+# TO COPYRIGHT, SUCH AS DATABASE RIGHTS AS INTRODUCED IN EUROPE BY THE
+# DIRECTIVE 96/9/EC, YOU ALSO MAY USE THIS WORK UNDER THE TERMS OF
+# CC-BY-SA 3.0 (unported).
+# [http://creativecommons.org/licenses/by-sa/3.0/]
+#
+# ANY USE OF THE WORK OTHER THAN AS AUTHORIZED UNDER THIS LICENSE OR
+# DIRECTLY ALLOWED BY THE APPLICABLE LAW IS PROHIBITED.
+#
+# If you have any questions or if you wish to seek permission to use this
+# data beyond what is offered by CC-BY-SA 3.0 (unported), please contact
+# the GEM Foundation at: licensing@globalquakemodel.org
+#
+# More information on licensing: http://www.globalquakemodel.org/licensing
+#
+#
+# The ISC-GEM Global Instrumental Earthquake Catalogue contains:
+# - earthquake origin date and time;
+# - epicentre (lat,lon);
+# - error ellipse parameters (smajax, sminax, strike), epicentre quality,
+# (q:A(highest)/B/C);
+# - depth, depth uncertainty (unc), depth quality (q:A(highest)/B/C);
+# - Mw, Mw uncertainty (unc), quality (q:A(highest)/B/C), source(s:p-proxy,
+# d-direct computation);
+# - where available: scalar moment (mo), factor (fac) , mo author (mo_auth)
+# and six moment tensor components (mpp, mpr, mrr, mrt, mtp, mtt).
+#
+# The Supplement to the Catalogue is provided in a separate file. The Supplement
+# contains a list of those earthquakes for which poor data availability
+# prevented the authors from performing a reliable determination of either
+# the epicentre or the magnitude parameters or both.
+#
+# For further information about the catalogue please contact the ISC at:
+# admin@isc.ac.uk
+#
+# What's New:
+# Version 1.0  Released on 2013-01-31 (period covered: 1900-2009)
+# Version 1.01 Released on 2013-02-26 (period covered: 1900-2009)
+# Version 1.02 Released on 2013-05-01 (period covered: 1900-2009)
+# Version 1.03 Released on 2013-06-11 (period covered: 1900-2009)
+# Version 1.04 Released on 2013-11-05 (period covered: 1900-2009)
+# Version 2.0  Released on 2015-01-19 (period covered: 1900-2011, added Mw>=~5.5 during 1950-1959 & 2010-2011)
+# Version 2.01 Released on 2015-07-10 (Removed evid = 877612 from the main catalogue as the event is a documented nuclear explosion in Novaya Zemlya)
+#
+# Details of updates are available on www.isc.ac.uk/iscgem/update_log
+#
+#         date          ,    lat   ,    lon   , smajax, sminax, strike, q ,  depth ,   unc , q ,  mw  ,  unc , q , s ,   mo  , fac,  mo_auth ,  mpp  ,  mpr  ,  mrr  ,  mrt  ,  mtp  ,  mtt  ,    eventid
+ 1989-10-18 00:04:17.44 ,   37.074 , -121.806 ,   4.4 ,   3.3 ,  52.0 , A ,   12.0 ,   3.3 , A , 6.89 , 0.10 , A , d ,  2.69 , 19 ,    gcmt  ,  1.23 , -1.04 ,  1.28 ,  1.24 ,  0.11 , -2.52 ,     389808
+ 1994-01-17 12:30:56.24 ,   34.164 , -118.550 ,   4.0 ,   3.4 ,  49.8 , A ,   15.0 ,   3.4 , A , 6.65 , 0.10 , A , d ,  1.18 , 19 ,    gcmt  , -0.13 , -0.40 ,  1.08 ,  0.05 ,  0.44 , -0.94 ,     189275
