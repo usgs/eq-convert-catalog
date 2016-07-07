@@ -3,6 +3,7 @@
 #stdlib imports
 from datetime import datetime
 from xml.dom import minidom
+import os.path
 
 #third party imports
 from neicio.tag import Tag
@@ -19,6 +20,45 @@ from neicio.tag import Tag
 # 4) (possibly) child Tags, which are added after the parent tag has been created.  event_tag.addChild(mag_tag)
 
 # Note that #3 and #4 are mutually exclusive, meaning that an XML element cannot have both data AND children.
+
+def write_quakeml(xmlstr,eventid,outfolder,filetype=None):
+    """Write a QuakeML string to a file, return name of file.
+
+    Given the following inputs:
+    eventid = 'us1234'
+    outfolder = '/home/user/quakeml'
+    filetype = 'ndk'
+    
+    the program will construct the following filename:
+    /home/user/quakeml/us1234_ndk.xml
+
+    Given the following inputs:
+    eventid = 'us1234'
+    outfolder = '/home/user/quakeml'
+    
+    the program will construct the following filename:
+    /home/user/quakeml/us1234.xml
+    
+    
+    :param xmlstr:
+      QuakeML string.
+    :param eventid:
+      Event ID or other unique value within collection of files to be written.
+    :param outfolder:
+      Folder where QuakeML file should be written.
+    :param filetype:
+      Input file type (ndk, mloc, etc.) or some string that identifies the source of the event data.
+    :returns:
+      Path to output file name.
+    """
+    if filetype is None:
+        fname = os.path.join(outfolder,'%s.xml' % (eventid))
+    else:
+        fname = os.path.join(outfolder,'%s_%s.xml' % (eventid,filetype))
+    f = open(fname,'wt')
+    f.write(xmlstr)
+    f.close()
+    return fname
 
 def create_quakeml(event):
     """Given an earthquake event dictionary, return an XML string containing QuakeML representing that earthquake information.

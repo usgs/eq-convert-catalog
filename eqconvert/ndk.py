@@ -102,7 +102,8 @@ def get_events(filename,contributor=None,catalog=None):
             tdict['focal']['evalstatus'] = 'reviewed'
             events.append(tdict)
             lc += 1
-            tdict = {}
+            tdict = {'catalog':catalog,
+                     'contributor':contributor}
 
     fh.close()
     return events
