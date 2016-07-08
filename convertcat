@@ -1,0 +1,54 @@
+#!/usr/bin/env python
+
+#stdlib imports
+import argparse
+import os.path
+import sys
+
+#local imports
+from eqconvert.convert import create_quakeml,write_quakeml
+from eqconvert import iscgem,ndk,mloc
+
+MODULES = {'iscgem':iscgem,
+           'ndk':ndk,
+           'mloc':mloc}
+
+def main(args):
+    if args.module not in MODULES:
+        print('Only the following formats are supported: %s. Exiting.' % str(MODULES.keys()))
+        sys.exit(1)
+
+    if not os.path.isdir(args.folder):
+        print('Output folder %s does not exist. Exiting.' % args.folder)
+        sys.exit(1)
+
+    for dfile in args.datafiles:
+        missing = []
+        if not os.path.isfile(dfile):
+            missing.append(dfile)
+        if len(missing):
+            print('The following input data files could not be found: %s' % str(missing))
+            sys.exit(1)
+
+    nevents = 0
+    for dfile in args.datafiles:
+        events = MODULES[args.module].get_events(dfile,catalog=args.catalog,contributor=args.contributor)
+        for event in events:
+            quakeml = create_quakeml(event)
+            write_quakeml(quakeml,event['id'],args.folder,filetype=args.module)
+            nevents += 1
+
+    print('%i events from %i files were written as QuakeML to %s.' % (nevents,len(args.datafiles),args.folder))
+    sys.exit(0)
+    
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Convert input files to QuakeML and write to output folder.')
+    parser.add_argument('module', help='The catalog format to parse.  Supported file formats are: %s' % str(MODULES.keys()))
+    parser.add_argument('folder', help='The folder where output QuakeML should be written.')
+    parser.add_argument('datafiles', nargs='+',help='Specify the file or files that are to be parsed')
+    parser.add_argument('--catalog', help='Specify the catalog to be inserted in the QuakeML.',default='us')
+    parser.add_argument('--contributor', help='Specify the contributor to be inserted in the QuakeML.',default='us')
+    
+    pargs = parser.parse_args()
+    main(pargs)
