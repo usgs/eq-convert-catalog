@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-setup(name='strongmotionfetch',
+setup(name='eqconvert',
       version='0.1dev',
       description='USGS Strong Motion Retrieval/Processing',
       author='Mike Hearne',
