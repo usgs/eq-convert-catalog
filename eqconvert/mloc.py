@@ -16,6 +16,7 @@ import json
 #local imports
 from .stationdb import StationTranslator
 
+#minimum magnitude at which we decide to search comcat for potentially a better magnitude
 MINMAG = 4.0
 
 URLBASE = 'http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=[START]&endtime=[END]&latitude=[LAT]&longitude=[LON]&maxradiuskm=[RAD]'
