@@ -21,6 +21,9 @@ from neicio.tag import Tag
 
 # Note that #3 and #4 are mutually exclusive, meaning that an XML element cannot have both data AND children.
 
+#constants
+TIMEFMT = '%Y-%m-%dT%H:%M:%S'
+
 def write_quakeml(xmlstr,eventid,outfolder,filetype=None):
     """Write a QuakeML string to a file, return name of file.
 
@@ -452,13 +455,13 @@ def _create_quality_tag(origin):
     quality_tag.addChild(mindist_tag)
     return quality_tag
 
-def _create_arrival_tag(origin,event):
+def _create_arrival_tag(phase,event):
     """Internal function to create arrival tag.
     """
-    picktime = phase['id'].strftime('%s')+'.'+phase['id'].strftime('%f')
-    arrid = 'quakeml:us.anss.org/arrival/%s/us_%s' % (event['id'],picktime)
+    #picktime = phase['id'].strftime('%s')+'.'+phase['id'].strftime('%f')
+    arrid = 'quakeml:us.anss.org/arrival/%s/us_%s' % (event['id'],phase['id'])
     arrival_tag = Tag('arrival',attributes={'publicID':arrid})
-    pickid = 'quakeml:us.anss.org/pick/%s/us_%s' % (event['id'],picktime)
+    pickid = 'quakeml:us.anss.org/pick/%s/us_%s' % (event['id'],phase['id'])
     pickid_tag = Tag('pickID',data=pickid)
     phase_tag = Tag('phase',data=phase['name'])
     azimuth_tag = Tag('azimuth',data='%.2f' % (phase['azimuth']))
@@ -473,16 +476,16 @@ def _create_arrival_tag(origin,event):
     arrival_tag.addChild(weight_tag)
     return arrival_tag
 
-def _create_pick_tag(origin,event):
+def _create_pick_tag(phase,event):
     """Internal function to create pick tag.
     """
-    picktime = phase['id'].strftime('%s')+'.'+phase['id'].strftime('%f')
-    pickid = 'quakeml:us.anss.org/pick/%s/us_%s' % (event['id'],picktime)
+    #picktime = phase['id'].strftime('%s')+'.'+phase['id'].strftime('%f')
+    pickid = 'quakeml:us.anss.org/pick/%s/us_%s' % (event['id'],phase['id'])
     pick_tag = Tag('pick',attributes={'publicID':pickid})
     time_tag = Tag('time')
     timevalue_tag = Tag('value',data=phase['time'].strftime(TIMEFMT+'Z'))
     time_tag.addChild(timevalue_tag)
-    network,station,channel,location = phase['sta'].split('.')
+    network,station,channel,location = phase['station'].split('.')
     attributes = {}
     if network.replace('-','').strip() != '':
         attributes['networkCode'] = network
@@ -537,10 +540,10 @@ def _update_event_tag(origin,event,event_tag):
     if 'phases' in origin:
         for phase in origin['phases']:
             #arrivals first
-            arrival_tag = _create_arrival_tag(origin,event)
+            arrival_tag = _create_arrival_tag(phase,event)
 
             #picks
-            pick_tag = _create_pick_tag(origin,event)
+            pick_tag = _create_pick_tag(phase,event)
 
             #arrivals belong to origins
             origin_tag.addChild(arrival_tag)

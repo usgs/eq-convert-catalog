@@ -16,6 +16,7 @@ import json
 #local imports
 from .stationdb import StationTranslator
 
+#minimum magnitude at which we decide to search comcat for potentially a better magnitude
 MINMAG = 4.0
 
 URLBASE = 'http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=[START]&endtime=[END]&latitude=[LAT]&longitude=[LON]&maxradiuskm=[RAD]'
@@ -266,18 +267,19 @@ def readPhaseLine(event,line,st):
     #phase['error'] = float(parts[13])
     phasekey = phase['station']+'_'+phase['name']
     #if this phase matches one previously found, we'll replace that in the list.
-    if 'phases' not in event:
-        event['phases'] = [phase.copy()]
+    origin = event['origins'][0]
+    if 'phases' not in origin:
+        origin['phases'] = [phase.copy()]
     else:
         haskey = False
-        for i in range(0,len(event['phases'])):
-            tphase = event['phases'][i]
+        for i in range(0,len(origin['phases'])):
+            tphase = origin['phases'][i]
             if tphase['station']+'_'+tphase['name'] == phasekey:
-                event['phases'][i] = phase.copy()
+                origin['phases'][i] = phase.copy()
                 haskey = True
                 break
         if not haskey:
-            event['phases'].append(phase.copy())
+            origin['phases'].append(phase.copy())
 
     return event
 
