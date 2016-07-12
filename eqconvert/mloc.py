@@ -251,7 +251,7 @@ def readPhaseLine(event,line,st):
         second = 0
     phase['time'] = datetime(year,month,day,hour,minute,second,microsecond)
     nscl_station = station
-    if station in event['stations']:
+    if 'stations' in event and station in event['stations']:
         nscl_station = st.getStationByLocation(station,
                                                lat=event['stations'][station]['lat'],
                                                lon=event['stations'][station]['lon'])
@@ -348,12 +348,14 @@ def get_events(qomfile,contributor='us',catalog='us'):
             nphases += 1
             event = readPhaseLine(event,line,st)
         if line.startswith('STOP'):
-            del event['stations']
+            if 'stations' in event:
+                del event['stations']
             events.append(event.copy())
             sys.stderr.write('Parsed event %i\n' % i)
             i += 1
             sys.stderr.flush()
-            event = {}
+            event = {'catalog':catalog,
+                     'contributor':contributor}
     f.close()
     print('Read %i events' % len(events))
 
@@ -370,10 +372,6 @@ def get_events(qomfile,contributor='us',catalog='us'):
                                             'type':preftype,
                                             'value':prefmag,
                                             'author':prefsource})
-
-    if station_file is not None:
-        print('Saving added information about station codes to %s' % station_file)
-        st.save(station_file)
 
     return events
 

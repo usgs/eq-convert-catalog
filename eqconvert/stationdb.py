@@ -86,7 +86,7 @@ class StationTranslator(object):
                 parts = line.split(':')
                 net,station,location,channel = parts[0].split()
                 return '%s.%s.%s.%s' % (net,station,channel,location)
-        return '%s.%s..' % (network)
+        return '%s.%s..' % (network,station)
         
     
     def getStationEpoch(self,station,phasetime):
@@ -130,9 +130,12 @@ class StationTranslator(object):
         nscl = station
         for line in lines:
             parts = line.split(':')
-            if len(parts) < 2:
+            if len(parts) < 2 or line.find('no channels'):
                 continue
-            f,d,s,n = parts[0].split('.')
+            try:
+                f,d,s,n = parts[0].split('.')
+            except:
+                foo = 1
             if f.lower() not in ['isc','iris']:
                 continue
             nscl = '%s.%s..' % (d,s)
