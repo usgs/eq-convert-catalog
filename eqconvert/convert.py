@@ -281,6 +281,7 @@ def _create_mag_tag(magnitude,eventid):
         creation_info_tag.addChild(author_tag)
         
     mag_tag.addChild(value_tag)
+    magnitude_tag.addChild(mag_tag)
     magnitude_tag.addChild(type_tag)
     if 'author' in magnitude:
         magnitude_tag.addChild(creation_info_tag)
