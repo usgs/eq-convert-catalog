@@ -21,6 +21,7 @@ from neicio.tag import Tag
 
 # Note that #3 and #4 are mutually exclusive, meaning that an XML element cannot have both data AND children.
 
+#constants
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
 
 def write_quakeml(xmlstr,eventid,outfolder,filetype=None):
