@@ -16,7 +16,7 @@ Uninstalling and Updating
 
 To uninstall:
 
-pip uninstall strongmotionfetch
+pip uninstall eq-convert-catalog
 
 To update:
 

@@ -6,7 +6,7 @@ import os.path
 import sys
 
 #local imports
-from eqconvert.convert import create_quakeml,write_quakeml
+from eqconvert.convert import create_quakeml,write_quakeml,write_csv
 from eqconvert import iscgem,ndk,mloc
 
 MODULES = {'iscgem':iscgem,
@@ -36,6 +36,8 @@ def main(args):
         for event in events:
             quakeml = create_quakeml(event)
             write_quakeml(quakeml,event['id'],args.folder,filetype=args.module)
+            if args.csv:
+                print(write_csv(event))
             nevents += 1
 
     print('%i events from %i files were written as QuakeML to %s.' % (nevents,len(args.datafiles),args.folder))
@@ -49,6 +51,6 @@ if __name__ == '__main__':
     parser.add_argument('datafiles', nargs='+',help='Specify the file or files that are to be parsed')
     parser.add_argument('--catalog', help='Specify the catalog to be inserted in the QuakeML.',default='us')
     parser.add_argument('--contributor', help='Specify the contributor to be inserted in the QuakeML.',default='us')
-    
+    parser.add_argument('-c','--csv', help='Output csv to stdout.',action='store_true')
     pargs = parser.parse_args()
     main(pargs)
