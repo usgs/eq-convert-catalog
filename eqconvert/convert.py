@@ -63,6 +63,63 @@ def write_quakeml(xmlstr,eventid,outfolder,filetype=None):
     f.close()
     return fname
 
+def write_csv(event):
+    """Given an earthquake event dictionary, return a CSV string containing ID, time, lat, lon, depth, magnitude.
+
+    :param event:
+      Dictionary containing the following information:
+       - id  Event ID.
+       - catalog Event catalog (who created the event information). [MANDATORY]
+       - contributor Event contributor (who is parsing/loading the event information into QuakeML). [MANDATORY]
+       - origins Sequence of origin dictionaries, which can contain: [MANDATORY]
+         - preferred Boolean indicating if this origin is to be preferred. [MANDATORY]
+           Multiple origins set to preferred will raise error.
+         - id  Origin id, must be unique within origins list. [MANDATORY]
+         - time Either a datetime object OR dictionary of {'value':datetime,'uncertainty':seconds} [MANDATORY]
+         - lat  Either float latitude of hypocenter, OR dictionary of {'value':float,'uncertainty':dd}, OR 
+                 dictionary of {'value':float,'lower':float,'upper':float} [MANDATORY]
+         - lon  Either float longitude of hypocenter, OR dictionary of {'value':float,'uncertainty':dd}, OR 
+                 dictionary of {'value':float,'lower':float,'upper':float} [MANDATORY]
+         - depth Either float depth of hypocenter, OR dictionary of {'value':float,'uncertainty':dd}, OR 
+                 dictionary of {'value':float,'lower':float,'upper':float} [MANDATORY]
+       - magnitudes Sequence of magnitude dictionaries containing: [MANDATORY]
+         - preferred Boolean indicating whether this magnitude is preferred. [MANDATORY]
+           Multiple origins set to preferred will raise error.
+         - type Magnitude type (Mw, Mb, etc.) [MANDATORY]
+         - value Magnitude value (0.0-9.9) [MANDATORY]
+         - author Author of magnitude. [OPTIONAL]
+    """
+    eid = event['id']
+    if isinstance(event['origins'][0]['time'],dict):
+        timestr = event['origins'][0]['time']['value'].strftime(TIMEFMT)
+    else:
+        timestr = event['origins'][0]['time'].strftime(TIMEFMT)
+
+    if isinstance(event['origins'][0]['lat'],dict):
+        lat = event['origins'][0]['lat']['value']
+    else:
+        lat = event['origins'][0]['lat']
+
+    if isinstance(event['origins'][0]['lon'],dict):
+        lon = event['origins'][0]['lon']['value']
+    else:
+        lon = event['origins'][0]['lon']
+
+    if isinstance(event['origins'][0]['depth'],dict):
+        depth = event['origins'][0]['depth']['value']
+    else:
+        depth = event['origins'][0]['depth']
+
+    mag = event['magnitudes'][0]['value']
+        
+    csvstr = '{id},{time},{lat:.4f},{lon:.4f},{depth:.1f},{mag:.1f}'.format(id=eid,
+                                                                            time=timestr,
+                                                                            lat=lat,
+                                                                            lon=lon,
+                                                                            depth=depth,
+                                                                            mag=mag)
+    return csvstr
+
 def create_quakeml(event):
     """Given an earthquake event dictionary, return an XML string containing QuakeML representing that earthquake information.
 
@@ -78,7 +135,7 @@ def create_quakeml(event):
          - time Either a datetime object OR dictionary of {'value':datetime,'uncertainty':seconds} [MANDATORY]
          - lat  Either float latitude of hypocenter, OR dictionary of {'value':float,'uncertainty':dd}, OR 
                  dictionary of {'value':float,'lower':float,'upper':float} [MANDATORY]
-         - lat  Either float longitude of hypocenter, OR dictionary of {'value':float,'uncertainty':dd}, OR 
+         - lon  Either float longitude of hypocenter, OR dictionary of {'value':float,'uncertainty':dd}, OR 
                  dictionary of {'value':float,'lower':float,'upper':float} [MANDATORY]
          - depth Either float depth of hypocenter, OR dictionary of {'value':float,'uncertainty':dd}, OR 
                  dictionary of {'value':float,'lower':float,'upper':float} [MANDATORY]
