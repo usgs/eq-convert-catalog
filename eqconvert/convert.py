@@ -324,10 +324,14 @@ def xml_pprint(xmlstr):
             continue
         print(line)
 
+def _get_magnitude_id(magnitude):
+    prefmag = 'quakeml:us.anss.org/magnitude/%s/%s' % (magnitude['author'],magnitude['type'])
+    return prefmag
+        
 def _create_mag_tag(magnitude,eventid):
     """Internal function to create magnitude tag.
     """
-    pid = 'quakeml:us.anss.org/magnitude/%s/%s' % (eventid,magnitude['type'])
+    pid = _get_magnitude_id(magnitude)
     magnitude_tag = Tag('magnitude',attributes={'publicID':pid})
     mag_tag = Tag('mag')
     value_tag = Tag('value',data='%.2f' % magnitude['value'])
